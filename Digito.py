@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 from tkinter import *
 import time
@@ -62,7 +62,7 @@ def num(digito, pos):
             ":":(PS,PI)
         }
         for ind in numeros[digito]:
-            image = canvas.create_image(ind[0], ind[1], anchor=NW, image=ind[2])
+            ihora.creaimg(ind[0], ind[1],ind[2])
         return
 
 def tiempo(test):
@@ -78,12 +78,13 @@ class subcanvas:
         self.bigcanvas=bigcanvas
         self.xpos=xpos
         self.ypos=ypos
-        self.subcuadro=Canvas(bigcanvas,highlightthickness=0,bg="green", width=ancho, height=alto)
+        self.subcuadro=Canvas(bigcanvas,highlightthickness=0,bg="black",width=ancho, height=alto)
     def abrevent(self):
         self.bigcanvas.create_window(self.xpos, self.ypos, window=self.subcuadro)
     def creaimg(self, fotox, fotoy,imagen):
         self.subcuadro.create_image(fotox,fotoy, anchor=NW, image=imagen)
-
+    def delimg(self):
+        self.subcuadro.delete(ALL)
 
 
 root = Tk()
@@ -102,14 +103,17 @@ temp= str(temp)+" °C"
 
 canvas = Canvas(root, bd=0,bg="black", width=wi, height=hi)
 canvas.pack() # this makes it visible
-canvas2 = Canvas(canvas, highlightthickness=0,bg="green", width=180, height=180)
-IClima= subcanvas(canvas,wi*0.5,hi*0.6,180,180)
+#canvas2 = Canvas(canvas, highlightthickness=0,bg="green", width=180, height=180)
+IClima= subcanvas(canvas,wi*0.5,hi*0.6,180,200)
+ihora=subcanvas(canvas,402,102,wi,200)
 icon=tiempo(clima.getestado(dicDato))
 
+
 def Ren():
-    canvas.delete(ALL)
+    ihora.delimg()
     hora = time.strftime('%H:%M:%S')
     #canvas.create_window(700, 400, window=canvas2)  #Crea canvas para icono2
+    ihora.abrevent()
     IClima.abrevent()
     canvas.create_text(wi * 0.80, hi * 0.55, fill="white", font=('arial', 50, "bold"), text=ciudad)
     canvas.create_text(wi*0.80, hi*0.65, fill="white", font=('arial',50, "bold"), text=temp)
@@ -124,4 +128,3 @@ Ren()
 
 
 root.mainloop(  )
-
